@@ -1,0 +1,87 @@
+USE superhero;
+
+SELECT * FROM alignment WHERE id=4; -- Bandos
+ 
+SELECT * FROM attribute; -- Atributos/Caracterisicas
+ 
+SELECT * FROM colours;   -- Lista de colores
+
+SELECT * FROM comic;     -- No se utilizara
+
+SELECT * FROM gender;    -- Generos
+
+SELECT * FROM publisher; -- publisher
+
+SELECT * FROM race;	 -- Razas
+
+SELECT * FROM superhero WHERE alignment_id = 4; -- super heroes xd
+
+SELECT * FROM superpower; 
+
+DELIMITER $$
+CREATE PROCEDURE spu_Publisher_vista()
+BEGIN
+
+END$$
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_Publisher_Listar()
+BEGIN
+	SELECT 
+	id,
+	publisher_name
+	FROM publisher;
+END$$
+
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_Publisher_Busqueda(IN _publisher_id VARCHAR(50))
+BEGIN
+	SELECT 
+	p.id,
+	p.superhero_name,
+	p.full_name,
+	g.gender,
+	r.race
+	
+	FROM superhero p
+	INNER JOIN gender g ON g.id = p.gender_id
+	INNER JOIN race r ON r.id = p.race_id
+	WHERE publisher_id = _publisher_id;
+	
+END$$
+
+DELIMITER $$
+CREATE PROCEDURE spu_grupos_heroes()
+BEGIN
+    SELECT
+        Alg.alignment AS Bando,
+        COUNT(Sh.id) AS Heroes
+    FROM
+        superhero Sh
+    LEFT JOIN
+        alignment Alg ON Alg.id = Sh.alignment_id
+    GROUP BY
+        Alg.id, Alg.alignment;
+END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_buscar_alineacion_publisher(IN _publisher_id VARCHAR(5))
+BEGIN 
+    SELECT
+        Alg.alignment AS Bando,
+        COUNT(Sh.id) AS Heroes
+    FROM
+        superhero Sh
+    LEFT JOIN
+        alignment Alg ON Alg.id = Sh.alignment_id 
+    WHERE 
+	publisher_id = _publisher_id
+    GROUP BY
+        Alg.id, Alg.alignment ;
+END $$
+
+ 
