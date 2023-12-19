@@ -48,11 +48,27 @@
         function $(id) {
             return document.querySelector(id);
         }
-
         const tbody = $("#tbody");
 
+        const contexto = $("#GraficoPay");
+        const grafico = new Chart(contexto, {
+            type: 'pie',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Super Heroes',
+                    data: [],
+                    borderWidth: 5
+                }]
+            }
+        });
+
+
         $("#Agregar").addEventListener("click", () => {
-            crearSelect(tbody);
+            variable = crearSelect(tbody);
+            console.log(variable);
+
+            valorChange(variable, grafico);
             crearOptions();
         });
 
@@ -60,18 +76,28 @@
             eliminarSelect(tbody);
         });
 
-        const contexto = $("#GraficoPay");
-        const grafico = new Chart(contexto, {
-            type: 'pie',
-            data: {
-                labels: ["a", "b"],
-                datasets: [{
-                    label: 'Super Heroes',
-                    data: [50, 780],
-                    borderWidth: 5
-                }]
-            }
-        });
+
+        function valorChange(valorchangeid, grafico) {
+            return $("#" + valorchangeid).addEventListener("change", (event) => {
+                seleccion = event.target.value;
+                console.log(seleccion);
+                const parametros = new FormData();
+                parametros.append("operacion", "listadoherores");
+                parametros.append("publisher_id", seleccion)
+                fetch("../controller/Publisher.controller.php", {
+                        method: "POST",
+                        body: parametros
+                    })
+                    .then(respuesta => respuesta.json())
+                    .then(datos => {
+
+                        grafico.data.labels = datos.map(registro => registro.Casa)
+                        grafico.data.datasets[0].data = datos.map(registro => registro.heroes)
+                        grafico.update()
+                    })
+
+            })
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

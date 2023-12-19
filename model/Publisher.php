@@ -43,7 +43,7 @@ class Publisher extends Conexion
         try {
             $consulta = $this->pdo->prepare("CALL spu_buscar_alineacion_publisher(?)");
             $consulta->execute(
-                array($data ['publisher_id'])
+                array($data['publisher_id'])
             );
             return $consulta->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
@@ -51,5 +51,16 @@ class Publisher extends Conexion
         }
     }
 
-    
+    public function agrupacionheroespubliser($data = [])
+    {
+        try {
+            $consulta = $this->pdo->prepare("CALL spu_Publisher_lista_heroes(?)");
+            $consulta->execute(
+                array($data['publisher_id'])
+            );
+            return $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }
