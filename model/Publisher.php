@@ -36,16 +36,18 @@ class Publisher extends Conexion
             die($e->getMessage());
         }
     }
-    
-    public function AlineacionPubliser($data=[])
+
+    public function AlineacionPubliser($data = [])
     {
-        /*
-        try{
-            $consulta = $this->pdo->prepare("CALL spu_buscar_alineacion_publisher()")
-        }
-        catch(Exception $e){
+
+        try {
+            $consulta = $this->pdo->prepare("CALL spu_buscar_alineacion_publisher()");
+            $consulta->execute(
+                array($data ['publisher_id'])
+            );
+            return $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
             die($e->getMessage());
         }
-*/
     }
 }

@@ -24,15 +24,15 @@
                 </select>
             </div>
             <div style="max-height: 400px; overflow-y: auto;">
-                    <canvas id="Alineaciones">
+                <canvas id="Alineaciones">
 
-                    </canvas>
+                </canvas>
             </div>
 
         </form>
 
     </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         //spu_buscar_alineacion_publisher
 
@@ -40,6 +40,19 @@
             return document.querySelector(id)
         }
 
+
+        const contexto = $("#Alineaciones");
+        const grafico = new Chart(contexto, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Super Heroes Alineacion',
+                    data: [],
+                    borderWidth: 5
+                }]
+            }
+        })
 
         (function() {
             fetch("../controller/Publisher.controller.php?operacion=listar")
@@ -59,17 +72,21 @@
                 })
         })();
 
-        $("#publishers").addEventListener("change",(event)=>{
+        $("#publishers").addEventListener("change", (event) => {
             cambio = event.target.value;
 
-            if(cambio!=""){
-                fetch()
-                .then()
-                .then()
+            if (cambio != "") {
+                const parametros = new FormData();
+                parametros.append("operacion", "Alineacion");
+                parametros.append("publisher_id", cambio)
+                fetch("../controller/Publisher.controller.php")
+                    .then(respuesta => respuesta.json())
+                    .then(datos => {
+
+                    })
                 //PARA COMPLETAR
             }
         })
-
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
