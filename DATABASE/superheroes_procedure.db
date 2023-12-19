@@ -85,3 +85,4 @@ BEGIN
 END $$
 
  
+ CALL spu_buscar_alineacion_publisher (4);

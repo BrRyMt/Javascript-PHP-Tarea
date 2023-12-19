@@ -41,7 +41,7 @@ class Publisher extends Conexion
     {
 
         try {
-            $consulta = $this->pdo->prepare("CALL spu_buscar_alineacion_publisher()");
+            $consulta = $this->pdo->prepare("CALL spu_buscar_alineacion_publisher(?)");
             $consulta->execute(
                 array($data ['publisher_id'])
             );

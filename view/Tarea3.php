@@ -16,14 +16,14 @@
     <main>
 
 
-        <form action="">
+        <form action="" class="container">
             <div class="mb-3 container">
                 <label class="form-label">Publisher Busqueda:</label>
                 <select name="" id="publishers" class="form-select">
                     <option value="">Seleccionar</option>
                 </select>
             </div>
-            <div style="max-height: 400px; overflow-y: auto;">
+            <div style="max-height: 400px; min-height: 400px; overflow-y: auto;">
                 <canvas id="Alineaciones">
 
                 </canvas>
@@ -39,21 +39,7 @@
         function $(id) {
             return document.querySelector(id)
         }
-
-
-        const contexto = $("#Alineaciones");
-        const grafico = new Chart(contexto, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Super Heroes Alineacion',
-                    data: [],
-                    borderWidth: 5
-                }]
-            }
-        })
-
+        // Funcion auto-ejecutable para el listar de publishers
         (function() {
             fetch("../controller/Publisher.controller.php?operacion=listar")
                 .then(respuesta => respuesta.json())
@@ -65,13 +51,28 @@
                         tagOption.innerHTML = element.publisher_name
                         $("#publishers").appendChild(tagOption)
                     });
-
                 })
                 .catch(e => {
                     console.error(e);
                 })
         })();
 
+        // Grafico canvas de Chart JS
+        const contexto = $("#Alineaciones");
+        const grafico = new Chart(contexto, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Super Heroes Alineacion',
+                    data: [],
+                    borderWidth: 5
+                }]
+            }
+        });
+
+
+        // Evento de cambio para que al cambiar se obtenga el id
         $("#publishers").addEventListener("change", (event) => {
             cambio = event.target.value;
 
@@ -79,12 +80,21 @@
                 const parametros = new FormData();
                 parametros.append("operacion", "Alineacion");
                 parametros.append("publisher_id", cambio)
-                fetch("../controller/Publisher.controller.php")
+                fetch("../controller/Publisher.controller.php", {
+                        method: "POST",
+                        body: parametros
+                    })
                     .then(respuesta => respuesta.json())
                     .then(datos => {
 
+                        grafico.data.labels = datos.map(registros => registros.Bando)
+                        grafico.data.datasets[0].data = datos.map(registro => registro.Heroes)
+                        
+                        if(grafico.data.labels[[0]] == null){
+                            grafico.data.labels[[0]] = "None Alignment";
+                        }
+                        grafico.update()
                     })
-                //PARA COMPLETAR
             }
         })
     </script>
