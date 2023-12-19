@@ -50,6 +50,8 @@
         }
         const tbody = $("#tbody");
 
+
+
         const contexto = $("#GraficoPay");
         const grafico = new Chart(contexto, {
             type: 'pie',
@@ -58,7 +60,8 @@
                 datasets: [{
                     label: 'Super Heroes',
                     data: [],
-                    borderWidth: 5
+                    borderWidth:1,
+                    backgroundColor: ["red", "blue", "green", "yellow", "black", "cyan"]
                 }]
             }
         });
@@ -66,9 +69,8 @@
 
         $("#Agregar").addEventListener("click", () => {
             variable = crearSelect(tbody);
-            console.log(variable);
 
-            valorChange(variable, grafico);
+            valorChange(variable);
             crearOptions();
         });
 
@@ -77,27 +79,7 @@
         });
 
 
-        function valorChange(valorchangeid, grafico) {
-            return $("#" + valorchangeid).addEventListener("change", (event) => {
-                seleccion = event.target.value;
-                console.log(seleccion);
-                const parametros = new FormData();
-                parametros.append("operacion", "listadoherores");
-                parametros.append("publisher_id", seleccion)
-                fetch("../controller/Publisher.controller.php", {
-                        method: "POST",
-                        body: parametros
-                    })
-                    .then(respuesta => respuesta.json())
-                    .then(datos => {
-
-                        grafico.data.labels = datos.map(registro => registro.Casa)
-                        grafico.data.datasets[0].data = datos.map(registro => registro.heroes)
-                        grafico.update()
-                    })
-
-            })
-        }
+        
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
