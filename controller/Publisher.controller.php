@@ -9,6 +9,9 @@ if(isset($_GET['operacion'])){
         $resultado = $publisher->GetPublisher();
         echo json_encode($resultado);
     }
+
+    
+
 }
 
 if(isset($_POST['operacion'])){

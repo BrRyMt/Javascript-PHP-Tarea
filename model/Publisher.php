@@ -50,4 +50,6 @@ class Publisher extends Conexion
             die($e->getMessage());
         }
     }
+
+    
 }

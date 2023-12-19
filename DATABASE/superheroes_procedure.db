@@ -18,11 +18,7 @@ SELECT * FROM superhero WHERE alignment_id = 4; -- super heroes xd
 
 SELECT * FROM superpower; 
 
-DELIMITER $$
-CREATE PROCEDURE spu_Publisher_vista()
-BEGIN
 
-END$$
 
 
 DELIMITER $$
@@ -86,3 +82,18 @@ END $$
 
  
  CALL spu_buscar_alineacion_publisher (4);
+ 
+ 
+DELIMITER $$
+CREATE PROCEDURE spu_Publisher_lista_heroes(IN _publisher_id VARCHAR(5))
+BEGIN
+	SELECT 
+	Pub.publisher_name AS Casa,
+	COUNT(sh.id) AS heroes
+	FROM superhero sh
+	INNER JOIN publisher  Pub
+	ON sh.publisher_id = Pub.id
+	WHERE publisher_id = _publisher_id
+	GROUP BY
+        Pub.publisher_name ;
+END$$
